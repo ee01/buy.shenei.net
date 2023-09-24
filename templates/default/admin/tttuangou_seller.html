@@ -1,0 +1,16 @@
+<!--{template admin/header}--> <form method="post" action="{$action}"> <table cellspacing="1" cellpadding="4" width="100%" align="center" class="tableborder"> <tr class="header"> <td colspan="8">商家管理 <a href="?mod=tttuangou&code=addseller">[添加商家]</a></td> </tr> </tr>
+{if !empty($seller)}
+<tr> <td colspan="11">请输入您要搜索的商家关键词：
+<input name="keyword" value="{$keyword}" id="keyword" type="text" /> <select name="city"> <option value="false" {if $area=='false'}selected{/if}>不限城市</option>
+{loop $city $i $value}
+<option value="{$value['cityid']}" {if $area==$value['cityid']}selected{/if}>{$value['cityname']}</option>
+{/loop}
+</select> <input name="bottom" type="submit" id="bottom" value="搜索" /></td> </tr>
+{/if}
+<tr> <td width="20%" bgcolor="#F8F8F8">商家名称</td> <td width="10%" bgcolor="#F8F8F8">所在城市</td> <td width="12%" bgcolor="#F8F8F8">联系电话</td> <td width="20%" bgcolor="#F8F8F8">官方网站</td> <td width="8%" bgcolor="#F8F8F8">产品数量</td> <td width="8%" bgcolor="#F8F8F8">成功订单</td> <td width="8%" bgcolor="#F8F8F8">营业总额</td> <td width="8%" align="center" bgcolor="#F8F8F8">管理</td> </tr>
+{if empty($seller)}
+<tr><td colspan="8">暂时还没有商家，您可以<a href="?mod=tttuangou&code=addseller">添加商家</a>。</td></tr>
+{/if}
+<!--{loop $seller $i $value}--> <tr> <td bgcolor="#FFFFFF">{$value['sellername']}</td> <td bgcolor="#FFFFFF">{$newcity[$value['area']]}</td> <td bgcolor="#FFFFFF">{$value['sellerphone']}</td> <td bgcolor="#FFFFFF"><a href="{$value['sellerurl']}" target="_blank">{$value['sellerurl']}</a></td> <td bgcolor="#FFFFFF">{$value['productnum']}</td> <td bgcolor="#FFFFFF">{$value['successnum']}</td> <td bgcolor="#FFFFFF">{$value['money']}元</td> <td align="center" bgcolor="#FFFFFF"><a href="?mod=tttuangou&code=editseller&id={$value['userid']}">修改</a> <a href="#" onclick="if(confirm('您确认要删除该商家吗？')){window.location.href='?mod=tttuangou&code=deleteseller&id={$value['id']}'}">删除</a></td> </tr> <!--{/loop}--> <tr bgcolor="#ffffff"><td colspan="8">
+请注意：添加商家时绑定的商家用户将成为商家产品消费券的管理者，<font color=red>商家用户可前台登陆、查看旗下消费券、核对和消费</font>！</td></tr> </table> <br> <center> </center> </form>
+{template admin/footer}

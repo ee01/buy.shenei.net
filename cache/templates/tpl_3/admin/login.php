@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <title>管理员控制面板</title> <meta http-equiv="Content-Type" content="text/html; charset=gbk"> </head> <script language="JavaScript">
+if(self.parent.frames.length != 0) {
+self.parent.location=document.location;
+}
+function redirect(url) {
+window.location.replace(url);
+}
+</script> <style type="text/css">
+html, body {background: #C5E8FA;color: #FFFFFF;font: 14px Arial, Helvetica, sans-serif;}
+ul li{ list-style:none;}
+.Box{margin:10% auto 0; width:550px; height:260px; background:#fff url(./templates/default/images/admincp/leftmenu_bg.gif) top repeat-x;}
+.Box_t{float:left; width:100%; text-indent:20px; line-height:35px;color:#fff; font-size:14px; }
+.Box ul{float:left; width:400px; margin:50px 0 0 80px; color:#000000; display:inline;_margin:30px 0 0 85px;}
+.Box ul li{ width:100%; float:left; margin:5px 0;}
+.Box ul li .ddd{ display:inline; width:100px; float:left; text-align:right; line-height:28px;}
+.Box ul li .inputa{ border:1px solid #89B4D6; width:160px; padding:1px 2px; line-height:23px; height:23px; background:#ffffcc; font-family:Arial, Helvetica, sans-serif}
+.Box ul li .submita{ background:#ff6600;border-color:#ff9900 #ff3300 #ff6633 #ff9900;border-style:solid;border-width:2px;color:#FFFFFF;cursor:pointer;
+letter-spacing:0.1em;padding:3px 1em; margin-left:100px;font-weight:600; font-size:14px;}
+.C{ width:500px; margin:20px auto; text-align:center; color:#666666; font-size:12px;}
+.C a{ color:#FF0000}
+</style> <div class="Box"> <div class="Box_t"><b>进入后台</b></div> <form method="post"  name="login" action="admin.php?mod=login&code=dologin">
+<input type="hidden" name="FORMHASH" value='<?=FORMHASH?>'/> <ul> <li> <div class="ddd">用 户 名：</div> <input readonly type="text" name="username" value="<?=MEMBER_NAME?>" class="inputa" /> </li> <li> <div class="ddd">密    码：</div> <input type="password" name="password" class="inputa"/> </li> <li style="border:none;"> <input type="submit" class="submita" value="登 录"/> </li> </ul> </form> </div> </div> <div class="C"></div> </html>

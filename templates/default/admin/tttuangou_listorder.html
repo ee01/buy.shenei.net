@@ -1,0 +1,20 @@
+<!--{template admin/header}--> <form method="post" action="{$action}"> <table cellspacing="1" cellpadding="4" width="100%" align="center" class="tableborder"> <tr class="header"> <td colspan="10">订单管理</td> </tr> <tr> <td colspan="11">请输入您要搜索的订单号或用户名：
+<input name="keyword" value="{$keyword}" id="keyword" type="text" /> <select name="type"> <option value="1" {if $searchtype==1}selected{/if}>订单号</option> <option value="2" {if $searchtype==2}selected{/if}>用户名</option> </select> <select name="status"> <option value="false" {if $status=='false'}selected{/if}>订单状态不限</option> <option value="1" {if $status=='1'}selected{/if}>已支付订单</option> <option value="0" {if $status=='0'}selected{/if}>未支付订单</option> </select> <input name="bottom" type="submit" id="bottom" value="搜索" /></td> </tr> <tr> <td width="6%" bgcolor="#F8F8F8">订单号</td> <td width="18%" bgcolor="#F8F8F8">商品名称</td> <td width="5%" bgcolor="#F8F8F8">单价</td> <td width="5%" bgcolor="#F8F8F8">数量</td> <td width="6%" bgcolor="#F8F8F8">应付额</td> <td width="8%" bgcolor="#F8F8F8">订单时间</td> <td width="8%" bgcolor="#F8F8F8">购买人/手机</td> <td width="8%" bgcolor="#F8F8F8">付款时间</td> <td width="8%" bgcolor="#F8F8F8">状态</td> <td width="15%" align="center" bgcolor="#F8F8F8">管理</td> </tr> <!--{if empty($order)}--> <tr><td colspan="10">暂时还没有任何订单信息！<BR>
+可能是您还没有<a href="?mod=tttuangou&code=addproduct">添加产品</a>，所有用户无法购买产品呢!</td></tr> <!--{/if}-->
+<!--{if !empty($order)}--> <!--{loop $order $value}-->
+<tr>
+	<td bgcolor="#FFFFFF">{$value['orderid']}</td>
+	<td bgcolor="#FFFFFF">{$value['name']}</td>
+	<td bgcolor="#FFFFFF">{$value['nowprice']}元</td>
+	<td bgcolor="#FFFFFF">{$value['productnum']}</td>
+	<td bgcolor="#FFFFFF">{$value['money']}元</td>
+	<td bgcolor="#FFFFFF">{eval echo date('Y-m-d H:i:s',$value[buytime]);}</td>
+	<td bgcolor="#FFFFFF"><a target=blank href=admin.php?mod=member&code=modify&id={$value['uid']} title="点此新窗口打开此用户资料编辑页面">{$value['username']}</a>{if $value['phone']!=''}<br/>$value['phone']{/if}{if $value['qq']!='' and 0}<br/><a target=blank href=tencent://message/?uin={$value['qq']}&Site=www.tttuangou.net&Menu=yes title="点此QQ联系">$value['qq']</a>{/if}</td>
+	<td bgcolor="#FFFFFF">{if $value[paytime]==''}未付款{else}{eval echo date('Y-m-d H:i:s',$value[paytime]);}{/if}</td>
+	<td bgcolor="#FFFFFF">{if $value['pay']==1}<font color=blue>已付款</font>{elseif $value['status']==0}已取消{else}<font color=red>等待付款</font>{/if}</td>
+	<td align="center" bgcolor="#FFFFFF">{if $value['pay']!=1 && $value['status']!=0} <a href="#" onclick="if(confirm('您确认已经收到改款项嘛？')){window.location.href='?mod=tttuangou&code=confirmorder&id={$value['orderid']}'}">确认付款</a>|  <a href="#" onclick="if(confirm('您确认要删除该订单吗？')){window.location.href='?mod=tttuangou&code=deleteorder&id={$value['orderid']}'}">删除</a>| <a href="?mod=tttuangou&code=mailcallpay&id={$value['orderid']}" title="点此给用户发Email通知及时付款">邮件催款</a>{else}----{/if}</td>
+</tr>
+<!--{/loop}--> <!--{/if}--> </table>
+{$page_arr}
+<br> <center> </center> </form>
+{template admin/footer}

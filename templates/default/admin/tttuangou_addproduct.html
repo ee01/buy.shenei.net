@@ -1,0 +1,158 @@
+<!--{template admin/header}--> <script src="js/calenderJS.js"></script> <script src="js/jquery.js"></script> <script type="text/javascript" charset="utf-8" src="js/kind/kindeditor.js"></script> <script type="text/javascript">
+KE.show({
+id : 'content'
+});
+KE.show({
+id : 'cue'
+});
+KE.show({
+id : 'theysay'
+});
+KE.show({
+id : 'wesay'
+});
+function getcity(i){
+if(i==0){
+alert('请选择一个城市');
+return false;
+}
+$.get("ajax.php?mod=getseller",{ 'city':i},function(data){$('#showcity').html(data)}); 
+return true;
+}
+</script>
+<script language="javascript">
+// Example: obj = findObj("image1");
+function findObj(theObj, theDoc){
+	var p, i, foundObj;
+	if(!theDoc) theDoc = document;
+	if ( (p = theObj.indexOf("?")) > 0 && parent.frames.length) {
+		theDoc = parent.frames[theObj.substring(p+1)].document;
+		theObj = theObj.substring(0,p);
+	}
+	if(!(foundObj = theDoc[theObj]) && theDoc.all)
+		foundObj = theDoc.all[theObj];
+	for (i=0; !foundObj && i < theDoc.forms.length; i++)
+		foundObj = theDoc.forms[i][theObj];
+	for(i=0; !foundObj && theDoc.layers && i < theDoc.layers.length; i++)
+		foundObj = findObj(theObj,theDoc.layers[i].document);
+	if(!foundObj && document.getElementById)
+		foundObj = document.getElementById(theObj);
+	return foundObj;
+}
+//添加一个参与人填写行
+function AddSignRow(){
+	//读取最后一行的行号，存放在txtTRLastIndex文本框中 
+	var txtTRLastIndex = findObj("txtTRLastIndex",document);
+	var rowID = parseInt(txtTRLastIndex.value);
+
+	var signFrame = findObj("pricetable",document);
+	//添加行
+	var newTR = signFrame.insertRow(signFrame.rows.length);
+	newTR.id = "SignItem" + rowID;
+	//添加列:子产品名
+	var newNameTD=newTR.insertCell(0);
+	//添加列内容
+	newNameTD.innerHTML = "<input name='name" + rowID + "' id='name" + rowID + "' type='text' size='80' value='{$value['name']}' />";
+
+	//添加列:原价
+	var newEmailTD=newTR.insertCell(1);
+	//添加列内容
+	newEmailTD.innerHTML = "<input name='price" + rowID + "' id='price" + rowID + "' type='text' size='6' value='{$value['price']}' />元";
+
+	//添加列:现价
+	var newTelTD=newTR.insertCell(2);
+	//添加列内容
+	newTelTD.innerHTML = "<input name='nowprice" + rowID + "' id='nowprice" + rowID + "' type='text' size='6' value='{$value['nowprice']}' />元";
+
+	//添加列:定金
+	var newMobileTD=newTR.insertCell(3);
+	//添加列内容
+	newMobileTD.innerHTML = "<input name='earnest" + rowID + "' id='earnest" + rowID + "' type='text' size='6' value='{$value['earnest']}' />元";
+
+	//添加列:删除按钮
+	var newDeleteTD=newTR.insertCell(4);
+	//添加列内容
+	newDeleteTD.innerHTML = "<div align='center' style='width:40px'><a href='javascript:;' onclick=\"DeleteSignRow('SignItem" + rowID + "')\">删除</a></div>";
+
+	//将行号推进下一行
+	txtTRLastIndex.value = (rowID + 1).toString() ;
+}
+//删除指定行
+function DeleteSignRow(rowid){
+	var signFrame = findObj("pricetable",document);
+	var signItem = findObj(rowid,document);
+
+	//获取将要删除的行的Index
+	var rowIndex = signItem.rowIndex;
+
+	//删除指定Index的行
+	signFrame.deleteRow(rowIndex);
+/*
+	//重新排列序号，如果没有序号，这一步省略
+	for(i=rowIndex;i<signFrame.rows.length;i++){
+		signFrame.rows[i].cells[0].innerHTML = i.toString();
+	}
+*/
+}//清空列表
+function ClearAllSign(){
+	if (confirm('确定要清空所有参与人吗？')) {
+		var signFrame = findObj("pricetable",document);
+		var rowscount = signFrame.rows.length;
+
+		//循环删除行,从最后一行往前删除
+		for(i=rowscount - 1;i > 0; i--){
+			signFrame.deleteRow(i);
+		}
+
+		//重置最后行号为1
+		var txtTRLastIndex = findObj("txtTRLastIndex",document);
+		txtTRLastIndex.value = "1";
+
+		//预添加一行
+		AddSignRow(0);
+	}
+}
+</script>
+<form action="{$action}" method="post" enctype="multipart/form-data"> <table cellspacing="1" cellpadding="4" width="100%" align="center" class="tableborder"> <tr class="header"> <td colspan="2">添加产品</td> </tr>
+<tr> <td width="23%" bgcolor="#F8F8F8">产品名称（吸引眼球第一要素）：</td> <td width="77%" align="right" bgcolor="#FFFFFF"> <input name="name" type="text" id="name" size="80"></td> </tr>
+<tr> <td bgcolor="#F8F8F8">团购秒杀：</td> <td align="right" bgcolor="#FFFFFF"><label> <select name="is_seckill" id="is_seckill">
+<option value=0 {if $product['is_seckill']==0}selected{/if}>团购</option>
+<option value=1 {if $product['is_seckill']}selected{/if}>秒杀</option>
+</select> </label></td> </tr>
+<tr> <td bgcolor="#F8F8F8">团秒城市：</td> <td align="right" bgcolor="#FFFFFF"><label> <select name="city"  onchange="getcity(this.value)" id="city"> <option value="0">请先选择城市</option>
+{loop $city $i $value}
+<option value="{$value['cityid']}">{$value['cityname']}</option>
+{/loop}
+</select> </label></td> </tr> <tr> <td bgcolor="#F8F8F8">合作商家：</td> <td align="right" bgcolor="#FFFFFF"> <span id='showcity'>
+请先选择城市
+</span> </td> </tr>
+<tr> <td bgcolor="#F8F8F8">原价：</td> <td align="right" bgcolor="#FFFFFF"><input name="price" type="text" id="price" size="6" />元</td> </tr>
+<tr> <td bgcolor="#F8F8F8">现价：</td> <td align="right" bgcolor="#FFFFFF"><input name="nowprice" type="text" id="nowprice" size="6" />元</td> </tr>
+<tr> <td bgcolor="#F8F8F8">定金：</td> <td align="right" bgcolor="#FFFFFF"><input name="earnest" type="text" id="earnest" size="6" />元</td> </tr>
+<tr> <td bgcolor="#F8F8F8"><input name="useotherprice" type="checkbox" id="useotherprice" value="1" />是否启用规格：[<a onclick="AddSignRow()"><font color=red>添加</font></a>&nbsp;<a onclick="ClearAllSign()"><font color=silver>清空</font></a>]</td> <td align="right" bgcolor="#FFFFFF">
+<table id="pricetable" cellspacing="1" cellpadding="4" width="100%" align="center" class="tableborder">
+  <tr>
+    <td width="40%">子产品名</td>
+    <td width="20%">原价</td>
+    <td width="20%">现价</td>
+    <td width="20%">定金</td>
+	<td>&nbsp;</td>
+  </tr>
+</table>
+<input name='txtTRLastIndex' type='hidden' id='txtTRLastIndex' value="1" />
+</td> </tr>
+<tr> <td bgcolor="#F8F8F8">产品图片：</td> <td align="right" bgcolor="#FFFFFF"><input name="img" type="file" id="img" /></td> </tr>
+<tr> <td bgcolor="#F8F8F8">简介：</td> <td align="right" bgcolor="#FFFFFF"><textarea name="intro" cols="40" rows="5" id="intro"></textarea></td> </tr>
+<tr> <td bgcolor="#F8F8F8">产品数量上限：</td> <td align="right" bgcolor="#FFFFFF"><input name="maxnum" type="text" id="maxnum" /><span style="color:red;">*0表示不限制</span></td> </tr>
+<tr> <td bgcolor="#F8F8F8">团秒开始时间：</td> <td align="right" bgcolor="#FFFFFF"><input name="begintime" type="text" id="begintime" onfocus="HS_setDate(this)" size="21" />（从设定日期0点开始）</td> </tr>
+<tr> <td bgcolor="#F8F8F8">团秒结束时间：</td> <td align="right" bgcolor="#FFFFFF"><input name="overtime" type="text" id="overtime" onfocus="HS_setDate(this)" size="21" />（到指定日期0点结束）</td> </tr>
+<tr> <td bgcolor="#F8F8F8">消费券有效期的截止日期：</td> <td align="right" bgcolor="#FFFFFF"><input name="perioddate" type="text" id="perioddate" onfocus="HS_setDate(this)" size="21" /></td> </tr>
+<tr> <td bgcolor="#F8F8F8">最少需要多少人购买才算团购成功：</td> <td align="right" bgcolor="#FFFFFF"><input name="successnum" type="text" id="successnum" value="{$default_successnum}" />（若是秒杀则强制为0）</td> </tr>
+<tr> <td bgcolor="#F8F8F8">一次最多买多少产品：</td> <td align="right" bgcolor="#FFFFFF"><input name="oncemax" type="text" id="oncemax" value="{$default_oncemax}" /><span style="color:red;">*0表示不限制</span></td> </tr>
+<tr> <td bgcolor="#F8F8F8">是否显示：</td> <td align="right" bgcolor="#FFFFFF"><input name="display" type="checkbox" id="display" value="1" /></td> </tr>
+<tr> <td bgcolor="#F8F8F8">本单详情：</td> <td align="right" bgcolor="#FFFFFF"> <div style="clear:both;"> <textarea name="content" style="width:540px; height:200px;" id="content"></textarea> </div> </td> </tr>
+<tr> <td bgcolor="#F8F8F8">特别提示：</td> <td align="right" bgcolor="#FFFFFF"> <div style="clear:both;"> <textarea name="cue" style="width:540px; height:200px;" id="content"></textarea> </div> </td> </tr>
+<tr> <td bgcolor="#F8F8F8">他们说：</td> <td align="right" bgcolor="#FFFFFF"> <div style="clear:both;"> <textarea name="theysay" style="width:540px; height:200px;" id="content"></textarea> </div> </td> </tr>
+<tr> <td bgcolor="#F8F8F8">舍内团秒说：</td> <td align="right" bgcolor="#FFFFFF"> <div style="clear:both;"> <textarea name="wesay" style="width:540px; height:200px;" id="content"></textarea> </div> </td> </tr>
+</table> <br> <center><input type="submit" class="button" name="addsubmit" value="提 交"></center> </form>
+{template admin/footer}

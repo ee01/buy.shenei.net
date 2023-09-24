@@ -1,0 +1,20 @@
+<!--{template admin/header}--> <script src="js/calenderJS.js"></script> <script type="text/javascript" charset="utf-8" src="js/kind/kindeditor.js"></script> <script type="text/javascript">
+KE.show({
+id : 'aboutme'
+});
+KE.show({
+id : 'privacy'
+});
+KE.show({
+id : 'contat'
+});
+KE.show({
+id : 'joinus'
+});
+KE.show({
+id : 'terms'
+});
+</script> <form action="{$action}" method="post" enctype="multipart/form-data"> <table cellspacing="1" cellpadding="4" width="100%" align="center" class="tableborder"> <tr class="header"> <td colspan="2">系统定义</td> </tr> <tr> <td width="23%" bgcolor="#F8F8F8">默认团购成功数量：</td> <td width="77%" align="right" bgcolor="#FFFFFF"> <input name="default_successnum" type="text" id="default_successnum" size="30" value="{$product['default_successnum']}">*设置默认必须有多少人购买产品，才算成功的团购</td> </tr> <tr> <td bgcolor="#F8F8F8">默认团购一次最多购买数量：</td> <td align="right" bgcolor="#FFFFFF"><label> <input name="default_oncemax" type="text" id="default_oncemax" size="30" value="{$product['default_oncemax']}" />*一个人在不超过总数的情况下一次性最多可以买多少产品!
+</label></td> </tr> <tr> <td bgcolor="#F8F8F8">默认缩略图宽：</td> <td align="right" bgcolor="#FFFFFF"><input name="default_imgwidth" type="text" id="default_imgwidth" size="30" value="{$product['default_imgwidth']}" /></td></tr> <tr> <td bgcolor="#F8F8F8">默认缩略图高：</td> <td align="right" bgcolor="#FFFFFF"><input name="default_imgheight" type="text" id="default_imgheight" size="30" value="{$product['default_imgheight']}" /></td> </tr> <tr> <td bgcolor="#F8F8F8">邀请好友奖励金额：</td> <td align="right" bgcolor="#FFFFFF"><input name="default_payfinder" type="text" id="default_payfinder" size="6" value="{$product['default_payfinder']}" />元</td> </tr><tr> <td bgcolor="#F8F8F8">默认城市id：</td> <td align="right" bgcolor="#FFFFFF"><input name="default_city" type="text" id="default_city" size="15" value="{$product['default_city']}" />*前台没有选择城市时默认显示的城市（在<A HREF="admin.php?mod=tttuangou&code=city">城市管理</A>中添加）</td> </tr><tr> <td bgcolor="#F8F8F8">是否需要邮箱认证才能登陆：</td> <td align="right" bgcolor="#FFFFFF"><select name="default_emailcheck"> <option value="1" {if $product['default_emailcheck']==1 } selected{/if}>是</option> <option value="0" {if $product['default_emailcheck']==0 } selected{/if}>否</option> </select>*用户是否可以不通过邮箱验证就可以登录系统
+</td> </tr> <tr> <td bgcolor="#F8F8F8">google地图接口密钥：<a href="http://code.google.com/intl/zh-CN/apis/maps/signup.html" target="_blank">[免费申请]</a></td> <td align="right" bgcolor="#FFFFFF"><input name="default_googlemapkey" type="text" id="default_googlemapkey" size="90" value="{$product['default_googlemapkey']}" /></td> </tr> <tr> <td bgcolor="#F8F8F8">关于我们：</td> <td align="right" bgcolor="#FFFFFF"><textarea name="aboutme" style="width:540px; height:200px;" id="content">{$product['aboutme']}</textarea></td> </tr> <tr> <td bgcolor="#F8F8F8">隐私保护：</td> <td align="right" bgcolor="#FFFFFF"><textarea name="privacy" style="width:540px; height:200px;" id="content">{$product['privacy']}</textarea></td> </tr> <tr> <td bgcolor="#F8F8F8">联系我们：</td> <td align="right" bgcolor="#FFFFFF"><textarea name="contat" style="width:540px; height:200px;" id="content">{$product['contat']}</textarea></td> </tr> <tr> <td bgcolor="#F8F8F8">加入我们：</td> <td align="right" bgcolor="#FFFFFF"><textarea name="joinus" style="width:540px; height:200px;" id="content">{$product['joinus']}</textarea></td> </tr> <tr> <td bgcolor="#F8F8F8">用户协议：</td> <td align="right" bgcolor="#FFFFFF"><textarea name="terms" style="width:540px; height:200px;" id="content">{$product['terms']}</textarea></td> </tr> </table> <br> <center><input type="submit" class="button" name="addsubmit" value="提 交"></center> </form>
+{template admin/footer}
