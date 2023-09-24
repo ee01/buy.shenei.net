@@ -11,35 +11,35 @@ $(document).ready(function() {
 
 function showtime(){
 	if(time>0){
-	//¼ÆËãÌì
+	//è®¡ç®—å¤©
 	day = Math.floor(time/86400);
-	//¼ÆËãĞ¡Ê±
+	//è®¡ç®—å°æ—¶
 	i=time%86400;
 	hour = Math.floor(i/3600);
-	//¼ÆËã·ÖÖÓ
+	//è®¡ç®—åˆ†é’Ÿ
 	i=i%3600;
 	minute = Math.floor(i/60);
-	//¼ÆËãÃë
+	//è®¡ç®—ç§’
 	second = i%60;
 	};
-//	if(time==0) $('#remainTime').html('ÍÅ¹º½áÊø');	
+//	if(time==0) $('#remainTime').html('å›¢è´­ç»“æŸ');	
 	i='';
-	if(day!=0){i+='<span>'+day+'</span>Ìì';}
-	if(hour!=0){i+='<span>'+hour+'</span>Ğ¡Ê±';}
-	if(minute!=0){i+='<span>'+minute+'</span>·Ö';}
-	if(second!=0){i+='<span>'+second+'</span>Ãë';}
+	if(day!=0){i+='<span>'+day+'</span>å¤©';}
+	if(hour!=0){i+='<span>'+hour+'</span>å°æ—¶';}
+	if(minute!=0){i+='<span>'+minute+'</span>åˆ†';}
+	if(second!=0){i+='<span>'+second+'</span>ç§’';}
 	if(time<=0 && is_seckill==1){
 		if(start){
-			i='ÃëÉ±¿ªÊ¼';
-			$('#TimeText').html('¿ìÃëTA£¬Ö»Ê£ÏÂ');
+			i='ç§’æ€å¼€å§‹';
+			$('#TimeText').html('å¿«ç§’TAï¼Œåªå‰©ä¸‹');
 			document.getElementById("TimeStart").href='@mod=index&code=buy&id='+id;
 			time=last;
 			showtime();
 		}else{
-			i='ÃëÉ±½áÊø';
+			i='ç§’æ€ç»“æŸ';
 		}
 	}
-	if(time<=0 && is_seckill==0){i='ÍÅ¹º½áÊø';}
+	if(time<=0 && is_seckill==0){i='å›¢è´­ç»“æŸ';}
 	$('#remainTime').html(i);
 	time--;
 }
